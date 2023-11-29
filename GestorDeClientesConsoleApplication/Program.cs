@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +23,7 @@ namespace GestorDeClientesConsoleApplication
         enum Menu { Listagem = 1, Adicionar, Remover, Sair }
         static void Main(string[] args)
         {
-
+            Carregar();
             bool escolheuSair = false;
             while (!escolheuSair)
             {
@@ -63,7 +65,8 @@ namespace GestorDeClientesConsoleApplication
             cliente.cpf = Console.ReadLine();
 
             clientes.Add(cliente);
-
+            //Salva automaticamente os elementos na lista
+            Salvar();
             Console.WriteLine("Cadastro concluído, aperte ENTER para sair.");
             Console.ReadLine();
         }
@@ -91,6 +94,43 @@ namespace GestorDeClientesConsoleApplication
             }
             Console.WriteLine("Aperte ENTER para sair.");
             Console.ReadLine();
+        }
+
+        static void Salvar()
+        {
+            //Tenta abrir o arquivo, se o arquivo não existir ele cria um novo
+            FileStream stream = new FileStream("clientes.dat", FileMode.OpenOrCreate);
+            //Salvando os dados em formato binário no arquivo
+            BinaryFormatter encoder = new BinaryFormatter();
+
+            //Passando a variavel que eu quero salvar dentro do arquivo
+            encoder.Serialize(stream, clientes);
+
+            //Fechando a stream
+            stream.Close();
+        }
+
+        static void Carregar()
+        {
+            FileStream stream = new FileStream("clientes.dat", FileMode.OpenOrCreate);
+
+            try
+            {
+                BinaryFormatter encoder = new BinaryFormatter();
+
+                clientes = (List<Cliente>)encoder.Deserialize(stream);
+
+                if (clientes == null)
+                {
+                    clientes = new List<Cliente>();
+                }
+
+            }
+            catch (Exception e)
+            {
+                clientes = new List<Cliente>();
+            }
+            stream.Close();
         }
     }
 }
