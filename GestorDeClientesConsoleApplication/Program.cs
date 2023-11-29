@@ -41,6 +41,7 @@ namespace GestorDeClientesConsoleApplication
                         Adicionar();
                         break;
                     case Menu.Remover:
+                        Remover();
                         break;
                     case Menu.Sair:
                         escolheuSair = true;
@@ -94,6 +95,23 @@ namespace GestorDeClientesConsoleApplication
             }
             Console.WriteLine("Aperte ENTER para sair.");
             Console.ReadLine();
+        }
+
+        static void Remover()
+        {
+            Listagem();
+            Console.WriteLine("Digite o ID do cliente que você quer remover:");
+            int id = int.Parse(Console.ReadLine());
+            if (id >= 0 && id < clientes.Count)
+            {
+                clientes.RemoveAt(id);
+                Salvar();
+            }
+            else
+            {
+                Console.WriteLine("Id digitado inválido, tente novamente!");
+                Console.ReadLine();
+            }
         }
 
         static void Salvar()
