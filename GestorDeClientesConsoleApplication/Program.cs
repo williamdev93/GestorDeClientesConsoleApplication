@@ -33,6 +33,7 @@ namespace GestorDeClientesConsoleApplication
                 switch (opcao)
                 {
                     case Menu.Listagem:
+                        Listagem();
                         break;
                     case Menu.Adicionar:
                         Adicionar();
@@ -64,6 +65,31 @@ namespace GestorDeClientesConsoleApplication
             clientes.Add(cliente);
 
             Console.WriteLine("Cadastro concluído, aperte ENTER para sair.");
+            Console.ReadLine();
+        }
+
+        static void Listagem()
+        {
+
+            if (clientes.Count > 0) // SE tem pelo menos um cliente cadastrado, exibirá a lógica abaixo
+            {
+                Console.WriteLine("Lista de Clientes: ");
+                int i = 0;
+                foreach (var cliente in clientes)
+                {
+                    Console.WriteLine($"ID: {i}");
+                    Console.WriteLine($"Nome: {cliente.nome}");
+                    Console.WriteLine($"E-mail: {cliente.email}");
+                    Console.WriteLine($"CPF: {cliente.cpf}");
+                    i++;
+                    Console.WriteLine("=================================");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nenhum cliente cadastrado!");
+            }
+            Console.WriteLine("Aperte ENTER para sair.");
             Console.ReadLine();
         }
     }
